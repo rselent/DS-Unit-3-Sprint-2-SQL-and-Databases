@@ -1,5 +1,5 @@
 """
-Scratch/assignment sql -- 3_2_1
+Assignment sql -- 3_2_1
 """
 
 import sqlite3
@@ -26,18 +26,17 @@ def totalSubclass( subclass):
 		FROM """ + subclass + ";"
 	return SLCURSE.execute( query).fetchall()
 	
-def totalItems():
-	query = """
-	SELECT COUNT( arm.item_id) 
-	FROM armory_item AS arm;
-	"""
-	return SLCURSE.execute( query).fetchall()
-
-def totalWeapons():
-	query = """
-	SELECT COUNT( wep.item_ptr_id) 
-	FROM armory_weapon AS wep;
-	"""
+def totalGear( type):
+	if type == "items":
+		query = """
+		SELECT COUNT( arm.item_id) 
+		FROM armory_item AS arm;
+		"""
+	elif type == "weapons":
+		query = """
+		SELECT COUNT( wep.item_ptr_id) 
+		FROM armory_weapon AS wep;
+		"""
 	return SLCURSE.execute( query).fetchall()
 
 def char_totalItems():
@@ -89,8 +88,8 @@ def char_avgGear( type):
 def main():
 
 # SUPPLEMENTAL MATH (because sql functions like AVG return wonky results atm)
-	itemsNotWep = (int( str( totalItems()).strip( "[(,)]")) - 
-				   int( str( totalWeapons()).strip( "[(,)]")) 
+	itemsNotWep = (int( str( totalGear( "items")).strip( "[(,)]")) - 
+				   int( str( totalGear( "weapons")).strip( "[(,)]")) 
 				  )
 	avgItems = (int( str( char_avgGear( "items")).strip( "[(,)]")) / 
 				int( str( totalChars()).strip( "[(,)]")) 
@@ -116,10 +115,10 @@ def main():
 							"charactercreator_fighter")).strip( "[(,)]"))
 	)
 	print( "\nTotal number of items in rpg: {}".format( 
-					str( totalItems()).strip( "[(,)]"))
+					str( totalGear( "items")).strip( "[(,)]"))
 	)
 	print( "\nTotal number of items that are weapons:  {}".format( 
-					str( totalWeapons()).strip( "[(,)]")),
+					str( totalGear( "weapons")).strip( "[(,)]")),
 			"\nTotal that are not:\t\t\t{}".format( itemsNotWep) 
 	)
 	print( "\nTop 20 characters with the most items",

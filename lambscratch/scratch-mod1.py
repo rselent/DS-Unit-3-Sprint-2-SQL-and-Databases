@@ -1,5 +1,5 @@
 """
-Scratch/assignment sql -- 3_2_1
+Assignment sql -- 3_2_1
 """
 
 import sqlite3
